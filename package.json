@@ -11,6 +11,7 @@
   "dependencies": {
     "bootstrap": "^4.4.1",
     "currency-flags": "^2.1.1",
+    "cypress": "^3.8.2",
     "http-server": "^0.12.1",
     "jquery": "^3.4.1"
   }
