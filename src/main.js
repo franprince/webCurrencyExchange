@@ -704,6 +704,10 @@ function completarTarjetas() {
     fecha = document.querySelector("#fecha-input");
 
   let nombreMonedaBase;
+  console.log(base)
+  if(base === ""){
+    return crearNotificacionError("moneda");
+  };
 
   eliminarTarjetas();
 
@@ -722,7 +726,7 @@ function completarTarjetas() {
           }
         })
         $(`#${codigoMoneda}-valor-moneda`).text(valorMoneda);
-        actualizarNotificación();
+        crearNotificacionExito();
         crearTextoTarjeta(base, codigoMoneda, valorMoneda);
       })
     })
@@ -754,10 +758,24 @@ function completarTarjetas() {
     document.querySelectorAll(".card-wrapper").forEach(e => e.remove());
   };
 
-  function actualizarNotificación() {
+  function crearNotificacionExito() {
     const $notificacion = $("#notificacion"),
-      opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+          opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+    $notificacion.removeClass();
+    $notificacion.addClass("alert alert-success")
     $notificacion.text(`Mostrando los valores de cambio del día ${fecha.valueAsDate.toLocaleDateString("es-ES", opcionesFecha).replace(",", "")}, tomando ${nombreMonedaBase} como base.`);
+  }
+
+  function crearNotificacionError(tipoError) {
+    const $notificacion = $("#notificacion");
+    const errores = {
+      fecha: "Por favor, seleccioná una fecha válida",
+      moneda: "Por favor, seleccioná un tipo de moneda"
+    };
+    $notificacion.removeClass();
+    $notificacion.addClass("alert alert-danger")
+    $notificacion.text(errores[tipoError]);
   }
 
   function crearTextoTarjeta(idMonedaBase, idMonedaTarjeta, valorMoneda) {

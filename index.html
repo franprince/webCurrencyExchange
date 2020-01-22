@@ -19,18 +19,18 @@
             <hr class="my-2">
         </div>
     </div>
-    <div id="notificacion" class="alert alert-success" role="alert">
+    <div id="notificacion" class="d-none" role="alert"></div>
     </div>
     <div class="container-fluid">
         <div class="form-group row">
             <div class="col-sm-2 col-md-4"></div>
             <div class="col-sm-8 col-md-4">
                 <label for="example-date-input" class="col-form-label">Fecha</label>
-                <input class="form-control" type="date" value="2020-01-01" id="fecha-input">
+                <input class="form-control" type="date" value="2020-01-01" max="today" id="fecha-input">
 
                 <label class="col-form-label" for="listado-monedas">Moneda base</label>
                 <select id="listado-monedas" class="form-control">
-                    <option selected>Tipos de moneda</option>
+                    <option selected value="">Tipos de moneda</option>
                 </select>
                 <button id="obtener-valores" type="button"
                     class="mx-auto mt-3 btn d-block btn-primary btn-success">Consultar</button>
