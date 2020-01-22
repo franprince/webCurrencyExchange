@@ -58,7 +58,7 @@ function completarTarjetas() {
     })
 
   function crearTarjeta(id) {
-    const cardWrapper = $(`<div id="${id}-wrapper" class="my-3 col-md-3 col-sm-4 card-wrapper">`),
+    const cardWrapper = $(`<div id="${id}-wrapper" class="my-3 col-md-4 col-lg-3 col-sm-6 card-wrapper">`),
       containerTarjeta = $(`<div id="${id}" class="card">`),
       nombreMoneda = $(`<h4 id="${id}-nombre" class="mt-4 card-title text-center"></h4>`),
       banderMoneda = $(`<div class="mx-auto mt-1 currency-flag currency-flag-${id.toLowerCase()} currency-flag-xl"></div>`),
