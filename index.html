@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Tipos de cambio</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/currency-flags/dist/currency-flags.min.css">
+    <link rel="stylesheet" href="src/style.css">
+</head>
+
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-3">Diferentes tipos de cambio</h1>
+            <p class="lead">:D</p>
+            <hr class="my-2">
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="form-group row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <label for="example-date-input" class="col-form-label">Fecha</label>
+                <input class="form-control" type="date" value="2020-01-01" id="fecha-input">
+
+                <label class="col-form-label" for="listado-monedas">Moneda base</label>
+                <select id="listado-monedas" class="form-control">
+                    <option selected>Tipos de moneda</option>
+                </select>
+                <button type="button" class="mx-auto mt-3 btn btn-primary btn-success">Consultar</button>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="mx-auto mt-4 currency-flag currency-flag-usd currency-flag-xl"></div>
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+    </div>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="src/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "exchangerates",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "currency-flags": "^2.1.1",
+    "http-server": "^0.12.1",
+    "jquery": "^3.4.1"
+  }
+}
