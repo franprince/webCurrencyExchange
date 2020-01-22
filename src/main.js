@@ -700,57 +700,70 @@ function obtenerListaMonedas() {
 
 function completarTarjetas() {
   const URL = "https://api.exchangeratesapi.io/",
-        base  = document.querySelector("#listado-monedas").value,
-        fecha = document.querySelector("#fecha-input").value;
-  
-  let   nombreMonedaBase;
+    base = document.querySelector("#listado-monedas").value,
+    fecha = document.querySelector("#fecha-input");
 
-        eliminarTarjetas();
+  let nombreMonedaBase;
 
-  fetch(URL + fecha + "?base=" + base)
+  eliminarTarjetas();
+
+  fetch(URL + fecha.value + "?base=" + base)
     .then(res => res.json())
     .then(info => {
       Object.keys(info.rates).forEach((codigoMoneda, index) => {
+        const valorMoneda = Object.values(info.rates)[index];
         crearTarjeta(codigoMoneda);
         todasLasMonedas.some(moneda => {
           if (moneda.codigo === codigoMoneda) {
             $(`#${codigoMoneda}-nombre`).text(moneda.divisa);
-            if(moneda.codigo === base){
-              nombreMonedaBase = moneda.divisa;
+            if (moneda.codigo === base) {
+              nombreMonedaBase = (moneda.divisa).toLocaleLowerCase();
             }
           }
         })
-        $(`#${codigoMoneda}-valor-moneda`).text(Object.values(info.rates)[index]);
-        actualizarNotificación()
+        $(`#${codigoMoneda}-valor-moneda`).text(valorMoneda);
+        actualizarNotificación();
+        crearTextoTarjeta(base, codigoMoneda, valorMoneda);
       })
-      })
-        .catch(error=>{
-        console.error("Ocurrió un error: "+error);
+    })
+    .catch(error => {
+      console.error("Ocurrió un error: " + error);
     })
 
-    function crearTarjeta(id){
-      const containerTarjeta = $(`<div id="${id}" class="card col-3">`);
-      const nombreMoneda = $(`<h4 id="${id}-nombre" class="mt-4 card-title text-center"></h4>`);
-      const banderMoneda = $(`<div class="mx-auto mt-1 currency-flag currency-flag-${id.toLowerCase()} currency-flag-xl"></div>`);
-      const bodyTarjeta = $('<div class="card-body"></div>');
-      const valorMoneda = $(`<h5 id="${id}-valor-moneda" class="card-title text-center"></h5>`);
-      const $containerPrincipal = $('#container-principal');
-    
-      $containerPrincipal.append(containerTarjeta);
-      containerTarjeta.append(nombreMoneda);
-      containerTarjeta.append(banderMoneda);
-      containerTarjeta.append(bodyTarjeta);
-      bodyTarjeta.append(valorMoneda);
-    }
+  function crearTarjeta(id) {
+    const cardWrapper = $(`<div id="${id}-wrapper" class="my-3 col-md-3 col-sm-4 card-wrapper">`),
+      containerTarjeta = $(`<div id="${id}" class="card">`),
+      nombreMoneda = $(`<h4 id="${id}-nombre" class="mt-4 card-title text-center"></h4>`),
+      banderMoneda = $(`<div class="mx-auto mt-1 currency-flag currency-flag-${id.toLowerCase()} currency-flag-xl"></div>`),
+      bodyTarjeta = $('<div class="card-body"></div>'),
+      valorMoneda = $(`<h5 id="${id}-valor-moneda" class="card-title text-center"></h5>`),
+      textoTarjeta = $(`<p class="card-text-${id}"></p>`)
 
-    function eliminarTarjetas(){
-      document.querySelectorAll(".card").forEach(e=>e.remove());
-    };
+    const $containerPrincipal = $('#container-principal');
 
-    function actualizarNotificación(){
-      const $notificacion = document.querySelector("#notificacion");
-      $notificacion.textContent = `Mostrando los valores de cambio del día ${fecha}, tomando el ${nombreMonedaBase} como base.`
-    }
+    $containerPrincipal.append(cardWrapper);
+    cardWrapper.append(containerTarjeta);
+    containerTarjeta.append(nombreMoneda);
+    containerTarjeta.append(banderMoneda);
+    containerTarjeta.append(bodyTarjeta);
+    bodyTarjeta.append(valorMoneda);
+    bodyTarjeta.append(textoTarjeta);
+  }
+
+  function eliminarTarjetas() {
+    document.querySelectorAll(".card-wrapper").forEach(e => e.remove());
+  };
+
+  function actualizarNotificación() {
+    const $notificacion = $("#notificacion"),
+      opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    $notificacion.text(`Mostrando los valores de cambio del día ${fecha.valueAsDate.toLocaleDateString("es-ES", opcionesFecha).replace(",", "")}, tomando ${nombreMonedaBase} como base.`);
+  }
+
+  function crearTextoTarjeta(idMonedaBase, idMonedaTarjeta, valorMoneda) {
+    const $textoTarjeta = $(`.card-text-${idMonedaTarjeta}`);
+    $textoTarjeta.text(`Se necesitan ${Math.round((1 / valorMoneda) * 10000) / 10000} ${idMonedaBase} para comprar 1 ${idMonedaTarjeta}`)
+  }
 }
 
 obtenerListaMonedas();

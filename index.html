@@ -13,17 +13,18 @@
 </head>
 
 <body>
-    <div class="jumbotron jumbotron-fluid">
+    <div class="jumbotron jumbotron-fluid mb-0">
         <div class="container">
             <h1 class="display-3 text-center">Tipos de cambio</h1>
             <hr class="my-2">
-            <p id="notificacion" class="lead"></p>
         </div>
     </div>
-    <div class="container">
+    <div id="notificacion" class="alert alert-success" role="alert">
+    </div>
+    <div class="container-fluid">
         <div class="form-group row">
-            <div class="col-4"></div>
-            <div class="col-4">
+            <div class="col-sm-2 col-md-4"></div>
+            <div class="col-sm-8 col-md-4">
                 <label for="example-date-input" class="col-form-label">Fecha</label>
                 <input class="form-control" type="date" value="2020-01-01" id="fecha-input">
 
@@ -31,7 +32,8 @@
                 <select id="listado-monedas" class="form-control">
                     <option selected>Tipos de moneda</option>
                 </select>
-                <button id="obtener-valores" type="button" class="mx-auto mt-3 btn d-block btn-primary btn-success">Consultar</button>
+                <button id="obtener-valores" type="button"
+                    class="mx-auto mt-3 btn d-block btn-primary btn-success">Consultar</button>
             </div>
         </div>
         <div id="container-principal" class="row">
