@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "start": "http-server",
+    "start": "node /src/main.js",
+    "empezar": "http-server",
     "cypress-run": "cypress run",
     "cypress-dev": "cypress open",
     "test": "run-p start cypress-run",
