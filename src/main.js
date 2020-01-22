@@ -702,9 +702,11 @@ function completarTarjetas() {
   const URL = "https://api.exchangeratesapi.io/",
         base  = document.querySelector("#listado-monedas").value,
         fecha = document.querySelector("#fecha-input").value;
+  
+  let   nombreMonedaBase;
 
         eliminarTarjetas();
-        
+
   fetch(URL + fecha + "?base=" + base)
     .then(res => res.json())
     .then(info => {
@@ -713,9 +715,13 @@ function completarTarjetas() {
         todasLasMonedas.some(moneda => {
           if (moneda.codigo === codigoMoneda) {
             $(`#${codigoMoneda}-nombre`).text(moneda.divisa);
+            if(moneda.codigo === base){
+              nombreMonedaBase = moneda.divisa;
+            }
           }
         })
         $(`#${codigoMoneda}-valor-moneda`).text(Object.values(info.rates)[index]);
+        actualizarNotificación()
       })
       })
         .catch(error=>{
@@ -740,6 +746,11 @@ function completarTarjetas() {
     function eliminarTarjetas(){
       document.querySelectorAll(".card").forEach(e=>e.remove());
     };
+
+    function actualizarNotificación(){
+      const $notificacion = document.querySelector("#notificacion");
+      $notificacion.textContent = `Mostrando los valores de cambio del día ${fecha}, tomando el ${nombreMonedaBase} como base.`
+    }
 }
 
 obtenerListaMonedas();
