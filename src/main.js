@@ -88,7 +88,7 @@ function completarTarjetas() {
 
     $notificacion.removeClass();
     $notificacion.addClass("alert alert-success")
-    $notificacion.text(`Mostrando los valores de cambio del día ${fecha.valueAsDate.toLocaleDateString("es-ES", opcionesFecha).replace(",", "")}, tomando ${nombreMonedaBase} como base.`);
+    $notificacion.text(`Mostrando los valores de cambio del día ${fecha.valueAsDate.toLocaleDateString("es-AR", opcionesFecha).replace(",", "")}, tomando ${nombreMonedaBase} como base.`);
   }
 
   function crearNotificacionError(tipoError) {
