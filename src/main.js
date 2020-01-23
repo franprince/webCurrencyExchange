@@ -7,6 +7,7 @@ function obtenerListaMonedas() {
   fetch(Url)
     .then(res => res.json())
     .then(info => {
+      $("#fecha-input").attr("max", info.date)
       Object.keys(info.rates).forEach(nombreMoneda => {
         todasLasMonedas.some(moneda => {
           if (moneda.codigo === nombreMoneda) {
