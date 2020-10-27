@@ -1,15 +1,15 @@
-const eliminarTarjetas = () => {
+function eliminarTarjetas() {
   document.querySelectorAll(".card-wrapper").forEach((e) => e.remove());
-};
+}
 
-const eliminarNotificacion = () => {
+function eliminarNotificacion() {
   document.querySelector("#notificacion").textContent = "";
   document.querySelector("#notificacion").className = "";
-};
-const definirFechaMaxima = (fecha) => {
+}
+function definirFechaMaxima(fecha) {
   $("#fecha-input").attr("max", fecha);
-};
-const crearTarjeta = (id) => {
+}
+function crearTarjeta(id) {
   const cardWrapper = $(
     `<div id="${id}-wrapper" class="my-3 col-md-4 col-lg-3 col-sm-6 card-wrapper">`
   );
@@ -35,9 +35,9 @@ const crearTarjeta = (id) => {
   containerTarjeta.append(bodyTarjeta);
   bodyTarjeta.append(valorMoneda);
   bodyTarjeta.append(textoTarjeta);
-};
+}
 
-const crearMensajeExito = (nombreMonedaBase) => {
+function crearMensajeExito(nombreMonedaBase) {
   const fecha = document.querySelector("#fecha-input");
   const opcionesFecha = {
     weekday: "long",
@@ -49,9 +49,12 @@ const crearMensajeExito = (nombreMonedaBase) => {
   return `Mostrando los valores de cambio del día ${fecha.valueAsDate
     .toLocaleDateString("es-AR", opcionesFecha)
     .replace(",", "")}, tomando ${nombreMonedaBase} como base.`;
-};
+}
+function agregarValorMoneda(codigoMoneda, valorMoneda) {
+  $(`#${codigoMoneda}-valor-moneda`).text(valorMoneda);
+}
 
-const crearNotificacion = (tipo, mensaje) => {
+function crearNotificacion(tipo, mensaje) {
   const $notificacion = $("#notificacion");
   $notificacion.removeClass();
   if (tipo === "exito") {
@@ -62,21 +65,22 @@ const crearNotificacion = (tipo, mensaje) => {
     $notificacion.addClass("alert");
   }
   $notificacion.text(mensaje);
-};
+}
 
-const crearTextoTarjeta = (idMonedaBase, idMonedaTarjeta, valorMoneda) => {
+function crearTextoTarjeta(idMonedaBase, idMonedaTarjeta, valorMoneda) {
   const $textoTarjeta = $(`.card-text-${idMonedaTarjeta}`);
   $textoTarjeta.text(
     `Se necesitan ${
       Math.round((1 / valorMoneda) * 10000) / 10000
     } ${idMonedaBase} para comprar 1 ${idMonedaTarjeta}`
   );
-};
+}
 
-const limpiarPantalla = () => {
+function limpiarPantalla() {
   eliminarNotificacion();
   eliminarTarjetas();
-};
+}
+
 export {
   crearMensajeExito,
   crearTarjeta,
@@ -85,4 +89,5 @@ export {
   eliminarTarjetas,
   limpiarPantalla,
   definirFechaMaxima,
+  agregarValorMoneda,
 };

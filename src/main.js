@@ -5,40 +5,25 @@ import {
   crearNotificacion,
   eliminarTarjetas,
   limpiarPantalla,
-  definirFechaMaxima,
+  agregarValorMoneda,
 } from "./modules/ui.js";
-
-export const importarMonedas = async () => {
-  const res = await fetch("./src/nombreMonedas.json");
-  return await res.json();
-}; // Pasar a localstorage
-
-const obtenerListaMonedas = async () => {
-  const URL = "https://api.exchangeratesapi.io/latest";
-  const res = await fetch(URL);
-  const info = await res.json();
-  const todasLasMonedas = await importarMonedas();
-  try {
-    definirFechaMaxima(info.date);
-    Object.keys(info.rates).forEach((nombreMoneda) => {
-      todasLasMonedas.some((moneda) => {
-        if (moneda.codigo === nombreMoneda) {
-          $("#listado-monedas").append(
-            new Option(moneda.divisa + " - " + nombreMoneda, nombreMoneda)
-          );
-        }
-      });
-    });
-  } catch {
-    (error) => crearNotificacion("error", error);
-  }
-};
+import { importarMonedas } from "./modules/fetchData.js";
+console.log(
+  "El código fue ofuscado con una técnica llamada ESTE FUE MI PRIMER PROYECTO, DEGAME EN PAS"
+);
+importarMonedas();
 
 const completarTarjetas = async () => {
   const URL = "https://api.exchangeratesapi.io/";
   const base = document.querySelector("#listado-monedas").value;
   const fecha = document.querySelector("#fecha-input");
-  const todasLasMonedas = await importarMonedas();
+  const todasLasMonedas = () => {
+    if (localStorage.getItem("todasLasMonedas") === null) {
+      return importarMonedas();
+    } else {
+      return JSON.parse(localStorage.getItem("todasLasMonedas"));
+    }
+  };
 
   if (base === "") {
     return crearNotificacion(
@@ -53,29 +38,59 @@ const completarTarjetas = async () => {
 
   eliminarTarjetas();
 
-  fetch(URL + fecha.value + "?base=" + base)
-    .then((res) => res.json())
-    .then((info) => {
-      Object.keys(info.rates).forEach((codigoMoneda, index) => {
-        const valorMoneda = Object.values(info.rates)[index];
-        crearTarjeta(codigoMoneda);
-        todasLasMonedas.some((moneda) => {
-          if (moneda.codigo === codigoMoneda) {
-            $(`#${codigoMoneda}-nombre`).text(moneda.divisa);
-            if (moneda.codigo === base) {
-              nombreMonedaBase = moneda.divisa.toLocaleLowerCase();
-            }
+  const res = await fetch(URL + fecha.value + "?base=" + base);
+  const info = await res.json();
+  try {
+    console.log(URL + fecha.value + "?base=" + base);
+    Object.keys(info.rates).forEach((codigoMoneda, index) => {
+      const valorMoneda = Object.values(info.rates)[index];
+      crearTarjeta(codigoMoneda);
+      todasLasMonedas().some((moneda) => {
+        if (moneda.codigo === codigoMoneda) {
+          $(`#${codigoMoneda}-nombre`).text(moneda.divisa);
+          if (moneda.codigo === base) {
+            nombreMonedaBase = moneda.divisa.toLocaleLowerCase();
           }
-        });
-        $(`#${codigoMoneda}-valor-moneda`).text(valorMoneda);
-        crearNotificacion("exito", crearMensajeExito(nombreMonedaBase));
-        crearTextoTarjeta(base, codigoMoneda, valorMoneda);
+        }
       });
-    })
-    .catch((error) => {
-      crearNotificacion("error", error);
+      agregarValorMoneda(codigoMoneda, valorMoneda);
+      $(`#${codigoMoneda}-valor-moneda`).text(valorMoneda);
+      crearNotificacion("exito", crearMensajeExito(nombreMonedaBase));
+      crearTextoTarjeta(base, codigoMoneda, valorMoneda);
     });
+  } catch {
+    (error) => {
+      crearNotificacion("error", error);
+    };
+  }
 };
+
+async function obtenerListaMonedas() {
+  const URL = "https://api.exchangeratesapi.io/latest";
+  const todasLasMonedas = () => {
+    if (localStorage.getItem("todasLasMonedas") === null) {
+      return importarMonedas();
+    } else {
+      return JSON.parse(localStorage.getItem("todasLasMonedas"));
+    }
+  };
+  const res = await fetch(URL);
+  const info = await res.json();
+  try {
+    $("#fecha-input").attr("max", info.date);
+    Object.keys(info.rates).forEach((nombreMoneda) => {
+      todasLasMonedas().some((moneda) => {
+        if (moneda.codigo === nombreMoneda) {
+          $("#listado-monedas").append(
+            new Option(moneda.divisa + " - " + nombreMoneda, nombreMoneda)
+          );
+        }
+      });
+    });
+  } catch (error) {
+    crearNotificacion("error", error);
+  }
+}
 
 obtenerListaMonedas();
 

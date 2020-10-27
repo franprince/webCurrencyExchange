@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "start": "http-server",
-    "cypress-run": "cypress run",
-    "cypress-dev": "cypress open",
-    "test": "run-p start cypress-run",
-    "test-dev": "run-p start cypress-dev"
+    "test": "jest --collect-coverage",
+    "test:dev": "jest --watch",
+    "test:ui": "run-p serve test:cypress",
+    "test:ui:dev": "run-p serve test:cypress:dev",
+    "test:cypress": "cypres run",
+    "test:cypress:dev": "cypress open",
+    "serve": "http-server -c-1"
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +21,8 @@
     "jquery": "^3.5.0"
   },
   "devDependencies": {
-    "cypress": "^3.8.2",
-    "jest": "^26.6.1"
+    "cypress": "^5.5.0",
+    "jest": "^26.6.1",
+    "npm-run-all": "^4.1.5"
   }
 }
