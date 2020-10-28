@@ -1,3 +1,5 @@
+import { crearComponentes } from "./componentes.js";
+
 function eliminarTarjetas() {
   document.querySelectorAll(".card-wrapper").forEach((e) => e.remove());
 }
@@ -6,36 +8,14 @@ function eliminarNotificacion() {
   document.querySelector("#notificacion").textContent = "";
   document.querySelector("#notificacion").className = "";
 }
+
 function definirFechaMaxima(fecha) {
   $("#fecha-input").attr("max", fecha);
 }
+
 function crearTarjeta(id) {
-  const cardWrapper = $(
-    `<div id="${id}-wrapper" class="my-3 col-md-4 col-lg-3 col-sm-6 card-wrapper">`
-  );
-  const containerTarjeta = $(`<div id="${id}" class="card">`);
-  const nombreMoneda = $(
-    `<h4 id="${id}-nombre" class="mt-4 card-title text-center"></h4>`
-  );
-  const banderMoneda = $(
-    `<div class="mx-auto mt-1 currency-flag currency-flag-${id.toLowerCase()} currency-flag-xl"></div>`
-  );
-  const bodyTarjeta = $('<div class="card-body"></div>');
-  const valorMoneda = $(
-    `<h5 id="${id}-valor-moneda" class="card-title text-center"></h5>`
-  );
-  const textoTarjeta = $(`<p class="card-text-${id}"></p>`);
-
-  const $containerPrincipal = $("#container-principal");
-
-  $containerPrincipal.append(cardWrapper);
-  cardWrapper.append(containerTarjeta);
-  containerTarjeta.append(nombreMoneda);
-  containerTarjeta.append(banderMoneda);
-  containerTarjeta.append(bodyTarjeta);
-  bodyTarjeta.append(valorMoneda);
-  bodyTarjeta.append(textoTarjeta);
-}
+  crearComponentes(id);
+} //Ya sé que está horrible esto, voy a revisarlo.
 
 function crearMensajeExito(nombreMonedaBase) {
   const fecha = document.querySelector("#fecha-input");
@@ -45,11 +25,11 @@ function crearMensajeExito(nombreMonedaBase) {
     month: "long",
     day: "numeric",
   };
-
   return `Mostrando los valores de cambio del día ${fecha.valueAsDate
     .toLocaleDateString("es-AR", opcionesFecha)
     .replace(",", "")}, tomando ${nombreMonedaBase} como base.`;
 }
+
 function agregarValorMoneda(codigoMoneda, valorMoneda) {
   $(`#${codigoMoneda}-valor-moneda`).text(valorMoneda);
 }

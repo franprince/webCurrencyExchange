@@ -15,7 +15,6 @@ describe("WEB de tipos de cambio", () => {
       "https://api.exchangeratesapi.io/2020-10-06?base=ISK",
       "fixture:cambios"
     ).as("obtenerCambios");
-    let fetchPolyfill;
 
     cy.visit("http://127.0.0.1:8080", {
       onBeforeLoad(contentWindow) {
@@ -33,5 +32,8 @@ describe("WEB de tipos de cambio", () => {
     cy.get("#listado-monedas").select("ISK");
     cy.get("#obtener-valores").click();
     cy.get("#notificacion").should("have.class", "alert-success");
+    cy.get("#container-principal")
+      .find(".card-wrapper")
+      .should("have.length", 33);
   });
 });

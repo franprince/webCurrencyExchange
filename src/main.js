@@ -6,8 +6,8 @@ import {
   eliminarTarjetas,
   limpiarPantalla,
   agregarValorMoneda,
-} from "./modules/ui.js";
-import { importarMonedas } from "./modules/fetchData.js";
+} from "./modules/ui/index.js";
+import { importarMonedas, obtenerListaMonedas } from "./modules/fetchData.js";
 console.log(
   "El código fue ofuscado con una técnica llamada ESTE FUE MI PRIMER PROYECTO, DEGAME EN PAS"
 );
@@ -39,7 +39,9 @@ const completarTarjetas = async () => {
   eliminarTarjetas();
 
   const res = await fetch(URL + fecha.value + "?base=" + base);
+
   const info = await res.json();
+
   try {
     console.log(URL + fecha.value + "?base=" + base);
     Object.keys(info.rates).forEach((codigoMoneda, index) => {
@@ -64,33 +66,6 @@ const completarTarjetas = async () => {
     };
   }
 };
-
-async function obtenerListaMonedas() {
-  const URL = "https://api.exchangeratesapi.io/latest";
-  const todasLasMonedas = () => {
-    if (localStorage.getItem("todasLasMonedas") === null) {
-      return importarMonedas();
-    } else {
-      return JSON.parse(localStorage.getItem("todasLasMonedas"));
-    }
-  };
-  const res = await fetch(URL);
-  const info = await res.json();
-  try {
-    $("#fecha-input").attr("max", info.date);
-    Object.keys(info.rates).forEach((nombreMoneda) => {
-      todasLasMonedas().some((moneda) => {
-        if (moneda.codigo === nombreMoneda) {
-          $("#listado-monedas").append(
-            new Option(moneda.divisa + " - " + nombreMoneda, nombreMoneda)
-          );
-        }
-      });
-    });
-  } catch (error) {
-    crearNotificacion("error", error);
-  }
-}
 
 obtenerListaMonedas();
 
